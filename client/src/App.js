@@ -42,7 +42,7 @@ function CadastroAluno() {
           <h2>Cadastro de Aluno</h2>
           <form onSubmit={handleClickButton}>
             <div className="form-group">
-              <label htmlFor="nome">Nome:</label>
+              <label htmlFor="nome">Nome Completo:</label>
               <input
                 type="text"
                 className="form-control"
