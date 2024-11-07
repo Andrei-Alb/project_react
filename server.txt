@@ -1,0 +1,128 @@
+==================== Parte do Banco no Servidor =================
+1 - Primeiro crie uma pasta para o Sistema: 
+
+nome da pasta :server
+Instale as seguintes dependecias:
+ npm i nodemon
+  npm i express faz a rota entre client e server
+  npm i cors faz a rota entre o server e o mysql
+  
+  npm add mysql2 express cors nodemon 
+
+<- isso instalara as dependecias do Mysql que usaremos nesse projeto
+
+Em package.json na linha scripts adicione  comandos:
+ "scripts": {
+    "start":"node index.js",
+    "dev":"nodemon index.js", <- isso usara o nodemon que instalamos no nosso arquivo para inciar o servidor
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+npm init -y para inicalizar o servidor
+
+
+2 - Digite o comando na raiz antes das duas pastas criadas:
+    crie um arquivo chamado index.js
+
+Observação: 
+O nodemon atualizara o servidor sempre que fizemos alterações em nosso projeto.
+O nodemon é um utilitário que monitora as mudanças nos arquivos do seu projeto e reinicia automaticamente o servidor Node. 
+js quando necessário.
+ Assim, você não precisa parar e iniciar o servidor manualmente a cada modificação.
+
+-- A partir de agora começaremos a fazer a conexão com o mysql --
+
+17- No gerenciado de Banco de Dados Crie um banco de dados chamado:
+create database crudalunos;
+
+create table alunos(
+ id int primary key auto_increment,
+ nome char(80) not null,
+ idade int not null
+);
+
+18 - Começaremos a configurar o servidor no arquivo  index.js que fica na pasta server inserindo as linhas:
+
+const express = require("express");
+const app = express();
+const mysql = require('mysql2');//isso pegara a versão mais atual do mysql que instalamos
+
+
+const db = mysql.createPool({
+    host:"localhost",
+    user:"root",
+    password:"admin",
+    database:"crudalunos",
+
+})
+
+
+app.get('/', (req, res)=>{
+    res.send("Seja Bem Vindo !!!")
+})
+
+app.listen(3001,()=>{
+    console.log("rodando servidor");
+});
+
+
+19 - Agora testaremos o envio dos dados para o banco:
+  Faça as seguintes alteraçoes no arquivo index.js
+
+const express = require("express");
+const app = express();
+const mysql = require('mysql2');//isso pegara a versão mais atual do mysql que instalamos
+
+
+const db = mysql.createPool({
+    host:"localhost",
+    user:"root",
+    password:"admin",
+    database:"crudalunos",
+
+})
+
+
+app.get("/",(req, res)=>{
+    let SQL = "INSERT INTO alunos (id,nome, idade) VALUES (null,'Maria','29')";
+    db.query(SQL,(err,result)=>{
+        console.log(err);
+    });
+})
+
+app.listen(3001,()=>{
+    console.log("rodando servidor");
+});
+
+20 - Depois dos testes devemos ter algo parecido com isso 
+
+const express = require("express");
+const app = express();
+const mysql = require('mysql2');//isso pegara a versão mais atual do mysql que instalamos
+const cors = require("cors")
+
+const db = mysql.createPool({
+    host:"localhost",
+    user:"root",
+    password:"",
+    database:"crudreact",
+
+})
+
+app.use(cors());
+app.use(express.json());
+
+app.post("/register",(req, res)=>{
+    const {nome} = req.body;
+    const {idade} = req.body;
+ 
+    let SQL = "INSERT INTO alunos(nome,idade) VALUES (?,?)";
+    
+    db.query(SQL,[nome,idade],(err, result)=>{
+         console.log(err);
+    })
+ });
+
+app.listen(3001,()=>{
+    console.log("rodando servidor");
+});

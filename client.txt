@@ -1,0 +1,171 @@
+Antes de utilizar esses passos voce deverá ter feitos todas as alteraçoes no server.
+
+1 - Acesse a pasta raiz e execute o comamdo abaixo:
+
+Observação este comando irá criar a pasta do front End chamado client em React no nosso projeto.
+
+npx create-react-app client 
+
+3 - Entre na pasta  e dogite o comando code.
+
+4 - Limpe as configurações globais de index.css e mantenha apenas:
+* {
+  padding: 0;
+  margin:0;
+}
+
+5 - Em app.js deixe de forma que fique basico para preparo para inicio do desenvolvimento:
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      
+    </div>
+  );
+}
+
+export default App;
+
+6 - Inicie o desenvolvimento do front end no arquivo app.js :
+Estarei utilizando o boostrap nesse projeto.
+
+7 -  Em app.js deixe de forma que fique basico para preparo para inicio do desenvolvimento:
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      
+    </div>
+  );
+}
+
+export default App;
+
+8  - Altere o index.js - O index.js devera ficar assim:
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+export default App;
+
+
+9 - No projeto React criado com o comando npx Na pasta do client adicionaremos a biblioteca axios
+abra outro terminal e acesse a pasta client.
+ npm add axios ou 
+ yarn  add axios 
+
+
+10 - adicione a importação do axios no arquivo App.js
+ import Axios from "axios";
+
+O Axios é uma escolha popular para lidar com a comunicação de dados entre o frontend e o backend em aplicações web. 
+Ele fornece uma API simples e flexível para realizar chamadas de API assíncronas, como obter dados de uma API RESTful,
+enviar dados para um servidor ou atualizar dados em tempo real.
+
+Começaremos criando nosso crud o primeiro metodo será o Insert no Front End.
+
+11 - Aicionaremos handleClickButton no arquivo App.js alterando o mesmo com o codigo abaixo
+
+import './App.css';
+import React, { useState } from 'react';
+import Axios from "axios";
+
+// Defina o componente CadastroAluno.
+function CadastroAluno() {
+  // Defina os estados iniciais para 'values', 'nome' e 'idade'.
+  const [values, setValues] = useState({ nome: '', idade: '' });
+  const [nome, setNome] = useState('');
+  const [idade, setIdade] = useState('');
+
+  // Exiba no console os valores do estado 'values'.
+  console.log(values);
+
+  // Função para manipular a mudança nos campos de entrada e atualizar o estado 'values'.
+  const handleChangeValues = (value) => {
+    // Use a função de atualização do estado para garantir que os valores antigos sejam preservados.
+    setValues(prevValue => ({
+      ...prevValue, // Mantém os valores antigos do objeto.
+      [value.target.name]: value.target.value, // Atualiza o campo correspondente com o novo valor.
+    }))
+  };
+
+  // Função para lidar com o clique no botão de cadastro.
+  const handleClickButton = () => {
+    // Faça uma solicitação POST para a URL especificada com os dados do aluno.
+    Axios.post("http://localhost:3001/register", {
+      nome: values.nome,
+      idade: values.idade
+    }).then((response) => {
+      console.log(response); // Exiba a resposta da solicitação no console.
+    })
+  }
+
+  // Renderize o formulário de cadastro de aluno.
+  return (
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <h2>Cadastro de Aluno</h2>
+          <form onSubmit={handleClickButton}>
+            <div className="form-group">
+              <label htmlFor="nome">Nome:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="nome"
+                name='nome'
+                onChange={handleChangeValues}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="idade">Idade:</label>
+              <input
+                type="text"
+                name='idade'
+                className="form-control"
+                id="idade"
+                onChange={handleChangeValues}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Cadastrar
+            </button>
+          </form>
+        </div>
+      </div>
+     
+    </div>
+  );
+}
+
+// Exporte o componente CadastroAluno para uso em outros lugares.
+export default CadastroAluno;
+
+12 - Rode o comando npm start para inicializar o Projeto.
+     Teste para ver se os dados digitados foram gravados no Banco de Dados.
+
+13 - instale o bootstrap no projeto front end com o comando
+     npm i bootstrap
+
+
+14 -  no index.js no projeto front end adicione a importação do bootstrap com a linha de comando abaixo
+import 'bootstrap/dist/css/bootstrap.css';
+
+15 - verifique se o formulario ficou com o layout agradável do bootstrap.
+
+
+Observação
+no nosso servidor na index temos nossa rota criada register no Back End que é utilizada pelo formulario que esta a aplicação FrontEnd:
+
+Agora é importar o modulo que tem o formulario para que ele seja exibido na div <root> e assim aparacer para o usuario;
